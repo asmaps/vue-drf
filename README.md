@@ -26,3 +26,44 @@ Vue.use(VueDrf)
 
 The plugin is written in ES6, so you will need babel to compile. It also uses the `.vue` component notation which is
 used as default in the [vue-webpack template](https://github.com/vuejs-templates/webpack).
+
+
+## Components
+
+### drf-editable-model
+
+Displays a model with editable fields from DRF. Uses an OPTIONS-request to dertermine fields and their properties
+(read_only, type, etc). Use a HyperlinkedModelSerializer on the django side, because vue-drf relies on the `url` field.
+
+JS:
+```javascript
+export default {
+  data () {
+    data: {}
+  },
+  ready () {
+    // or use the Resources stuff
+    this.$http.get('https://your.drf-api.example.org/model/1/').then((response) => {
+      this.data = response.data
+    })
+  }
+}
+```
+
+Template:
+
+```html
+<drf-editable-model v-if="data" :data="data"></drf-editable-model>
+```
+
+Accepts an optional `fields` property which should be a list of field names to display. If not given displays all fields
+in order from API. Use to only display a subset or specify the order of your fields.
+
+```html
+<drf-editable-model :data="data" :fields=""></drf-editable-model>
+```
+
+#### Events
+
+`drf-editable-model` dispatches an event `model-changed` when the model data changed and has been saved to the API.
+Contains the new object as payload.
