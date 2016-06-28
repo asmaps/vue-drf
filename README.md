@@ -35,6 +35,12 @@ used as default in the [vue-webpack template](https://github.com/vuejs-templates
 Displays a model with editable fields from DRF. Uses an OPTIONS-request to dertermine fields and their properties
 (read_only, type, etc). Use a HyperlinkedModelSerializer on the django side, because vue-drf relies on the `url` field.
 
+Non-readonly fields are clickable and change to an appropriate input field (uses vue-formular) to be edited.
+
+The `url` field will automatically be displayed as a link.
+
+#### Example code
+
 JS:
 ```javascript
 export default {
@@ -60,7 +66,7 @@ Accepts an optional `fields` property which should be a list of field names to d
 in order from API. Use to only display a subset or specify the order of your fields.
 
 ```html
-<drf-editable-model :data="data" :fields=""></drf-editable-model>
+<drf-editable-model :data="data" :fields="['id', 'created', 'name', 'url']"></drf-editable-model>
 ```
 
 #### Events
