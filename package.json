@@ -1,6 +1,6 @@
 {
   "name": "vue-drf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Vue.js connector to Django REST Framework (DRF) using vue-resource",
   "main": "main.vue",
   "scripts": {

@@ -13,19 +13,6 @@ box.
 
 install with npm: `npm i -S asmaps/vue-drf`
 
-Adjust the babel loader lines in `build/webpack.base.conf.js` to this (remove the exclude, add the include):
-
-```javascript
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        include: [
-          path.resolve(projectRoot, './src'),
-          path.resolve(projectRoot, './node_modules/vue-drf'),
-        ]
-      },
-```
-
 Install in Vue (e.g. in `main.js`):
 
 ```javascript
