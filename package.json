@@ -2,7 +2,7 @@
   "name": "vue-drf",
   "version": "0.0.1",
   "description": "A Vue.js connector to Django REST Framework (DRF) using vue-resource",
-  "main": "main.js",
+  "main": "main.vue",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
