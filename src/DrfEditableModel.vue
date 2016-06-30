@@ -54,7 +54,7 @@
         let self = this
         this.$http.put(this.data.url, this.data).then((response) => {
           el.$emit('showSaved')
-          this.$dispatch('model-changed', response.data)
+          this.$dispatch('drf.model-changed', response.data)
         }, (response) => {
           el.$emit('showErrors', response.data)
         })
