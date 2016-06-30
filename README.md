@@ -71,5 +71,5 @@ in order from API. Use to only display a subset or specify the order of your fie
 
 #### Events
 
-`drf-editable-model` dispatches an event `model-changed` when the model data changed and has been saved to the API.
+`drf-editable-model` dispatches an event `drf.model-changed` when the model data changed and has been saved to the API.
 Contains the new object as payload.
