@@ -66,7 +66,7 @@
         return items
       },
       valueDisplay () {
-        if(this.value === undefined) {
+        if(this.value === undefined || this.value === null) {
           return '???'
         } else if(this.type == 'boolean') {
           return this.value ? 'ja' : 'nein'
