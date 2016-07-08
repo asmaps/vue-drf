@@ -68,4 +68,12 @@
     cursor: pointer;
     border-bottom: 1px dotted #777;
   }
+
+  dt {
+    width: 200px;
+  }
+
+  dd {
+    margin-left: 210px;
+  }
 </style>

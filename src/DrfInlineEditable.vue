@@ -1,14 +1,21 @@
 <template>
   <span v-if="drfoptions">
     <span v-if="editing">
-      <vf-form client :options="{layout: 'form-inline'}">
-        <div :is="fieldType" :items="items" :value.sync="internalValue" :name="name" v-el:input @keyup.esc="cancelEdit"></div>
-        <span v-if="saving" class="text-warning" transition="fading"><i class="fa fa-spinner fa-spin"></i></span>
-        <span v-else>
-          <button type="button" @click="confirmEdit" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>
-          <button type="button" @click="cancelEdit" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
-        </span>
-      </vf-form>
+      <div v-if="type == 'boolean'">
+        <button type="button" @click="setBool(true)" class="btn btn-xs btn-success"><i class="fa fa-check"></i> Ja</button>
+        <button type="button" @click="setBool(false)" class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Nein</button>
+        <button type="button" @click="cancelEdit" class="btn btn-xs btn-primaty"><i class="fa fa-times"></i> Abbrechen</button>
+      </div>
+      <div v-else>
+        <vf-form client :options="{layout: 'form-inline'}">
+          <div :is="fieldType" :items="items" :value.sync="internalValue" :name="name" v-el:input @keyup.esc="cancelEdit"></div>
+          <span v-if="saving" class="text-warning" transition="fading"><i class="fa fa-spinner fa-spin"></i></span>
+          <span v-else>
+            <button type="button" @click="confirmEdit" class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
+            <button type="button" @click="cancelEdit" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
+          </span>
+        </vf-form>
+      </div>
       <ul v-if="errors">
         <li v-for="error in errors" class="text-danger">{{ error }}</li>
       </ul>
@@ -49,6 +56,9 @@
         return types[this.type]
       },
       items () {
+        if(!this.drfoptions.choices) {
+          return []
+        }
         let items = []
         for(let choice of this.drfoptions.choices) {
           items.push({text: choice.display_name, value: choice.value})
@@ -82,6 +92,10 @@
         this.editing = true
         let self = this
         this.$nextTick(() => {self.$els.input.getElementsByTagName('input')[0].focus()})
+      },
+      setBool(val) {
+        this.internalValue = val
+        this.confirmEdit()
       },
       confirmEdit () {
         this.errors = []
