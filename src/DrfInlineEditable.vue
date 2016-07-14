@@ -46,7 +46,7 @@
         return this.drfoptions.type
       },
       fieldType () {
-        utils.apiTypeToVueFormularType(this.type)
+        return utils.apiTypeToVueFormularType(this.type)
       },
       items () {
         if(!this.drfoptions.choices) {
