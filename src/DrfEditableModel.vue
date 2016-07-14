@@ -27,7 +27,7 @@
         return this.options.actions ? this.options.actions.PUT : []
       },
       fieldNames () {
-        if(this.fields) return this.fields
+        if(this.fields) return this.fields.filter((el) => { return this.fieldOptions[el] !== undefined})
         return Object.keys(this.fieldOptions)
       }
     },

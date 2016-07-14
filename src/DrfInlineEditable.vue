@@ -27,6 +27,8 @@
 </template>
 
 <script>
+  import utils from "./utils"
+
   export default {
     props: ['name', 'value', 'drfoptions'],
     data () {
@@ -44,16 +46,7 @@
         return this.drfoptions.type
       },
       fieldType () {
-        let types = {
-          'string': 'vf-text',
-          'boolean': 'vf-checkbox',
-          'datetime': 'vf-date',
-          'date': 'vf-date',
-          'integer': 'vf-number',
-          'choice': 'vf-select',
-          'field': 'vf-select',
-        }
-        return types[this.type]
+        utils.apiTypeToVueFormularType(this.type)
       },
       items () {
         if(!this.drfoptions.choices) {
@@ -90,8 +83,10 @@
         this.originalValue = this.value
         this.errors = []
         this.editing = true
-        let self = this
-        this.$nextTick(() => {self.$els.input.getElementsByTagName('input')[0].focus()})
+        if(this.type != 'boolean') {
+          let self = this
+          this.$nextTick(() => {self.$els.input.getElementsByTagName('input')[0].focus()})
+        }
       },
       setBool(val) {
         this.internalValue = val
@@ -101,6 +96,9 @@
         this.errors = []
         this.saving = true
         this.value = this.internalValue
+        if(this.value === '') {
+          this.value = null
+        }
         this.$dispatch('inline-editable.confirmed', {name: this.name, value: this.internalValue, el: this})
       },
       cancelEdit () {

@@ -2,7 +2,7 @@
   "name": "vue-drf",
   "version": "0.0.4",
   "description": "A Vue.js connector to Django REST Framework (DRF) using vue-resource",
-  "main": "./src/main.vue",
+  "main": "main.vue",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/asmaps/vue-drf/issues"
   },
-  "homepage": "https://github.com/asmaps/vue-drf#readme"
+  "homepage": "https://github.com/asmaps/vue-drf#readme",
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "webpack": "^1.13.1"
+  }
 }
