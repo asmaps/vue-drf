@@ -2,11 +2,18 @@
   <div>
     <bs-form horizontal v-if="fieldNames" v-ref:form>
       <bs-field
+        v-if="!create"
+        type="hidden"
+        name="id"
+        :initial-value="values.id"
+        :form="$refs.form"></bs-field>
+      <bs-field
         v-for="name in fieldNames"
         :type="getFieldType(fieldOptions[name].type)"
         :label="fieldOptions[name].label"
         :choices="fieldOptions[name].choices"
         :name="name"
+        :initial-value="getInitial(name)"
         :errors="errors[name]"
         :form="$refs.form"></bs-field>
       <bs-submit :form="$refs.form"></bs-submit>
@@ -19,7 +26,15 @@
   import utils from "./utils"
 
   export default {
-    props: ['url', 'fields'],
+    props: {
+      url: {
+        type: String,
+        required: true,
+      },
+      fields: Array,
+      values: Object,
+      create: Boolean,
+    },
     components: {
       BsForm,
       BsField,
@@ -33,7 +48,11 @@
     },
     computed: {
       fieldOptions () {
-        return this.options.actions ? this.options.actions.POST : {}
+        if(this.create) {
+          return this.options.actions ? this.options.actions.POST : {}
+        } else {
+          return this.options.actions ? this.options.actions.PUT : {}
+        }
       },
       fieldNames () {
         function filterCb(el) {
@@ -62,6 +81,17 @@
       this.fetchOptions()
     },
     methods: {
+      getInitial(name) {
+        if(this.fieldOptions[name].choices) {
+          for(let choice of this.fieldOptions[name].choices) {
+            if(choice.value == this.values[name]) {
+              return choice
+            }
+          }
+        }
+
+        return this.values[name] || ''
+      },
       getFieldType(type) {
         return utils.types[type]
       },
@@ -80,7 +110,9 @@
     events: {
       'bs-form.submit' (data) {
         for(const key of Object.keys(data)) {
-          if(this.fieldOptions[key].type == 'boolean') {
+          if(this.fieldOptions[key].read_only) {
+            delete data[key]
+          } else if(this.fieldOptions[key].type == 'boolean') {
             data[key] = data[key] ? true : false
           } else if(this.fieldOptions[key].type == 'integer') {
             if(!data[key]) {
@@ -93,11 +125,18 @@
           }
         }
         let self = this
-        this.$http.post(this.url, data).then((response) => {
-          self.$dispatch('drf.model-created', response.data)
-        }, (response) => {
+        function errorCb(response) {
           this.errors = response.data
-        })
+        }
+        if(this.create){
+          this.$http.post(this.url, data).then((response) => {
+            self.$dispatch('drf.model-created', response.data)
+          }, errorCb)
+        } else {
+          this.$http.put(this.url, data).then((response) => {
+            self.$dispatch('drf.model-changed', response.data)
+          }, errorCb)
+        }
       },
     },
   }
